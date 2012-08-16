@@ -35,7 +35,8 @@
       navigator.id.request({
         siteName: 'Open Badge Backpack',
         termsOfService: '/tou.html',
-        privacyPolicy: '/privacy.html'
+        privacyPolicy: '/privacy.html',
+        returnTo: '/'
       });
     });
     $('.js-persona-logout').click(function(){
