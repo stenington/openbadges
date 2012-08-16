@@ -33,7 +33,7 @@
 
     $('.js-persona-login').click(function(){
       navigator.id.request({
-	siteName: 'Open Badges Backpack',
+	siteName: 'Open Badge Backpack',
 	termsOfService: '/tou.html',
 	privacyPolicy: '/privacy.html'
       });
