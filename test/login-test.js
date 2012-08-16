@@ -13,9 +13,8 @@ suite
     .unpath()
     .path('/backpack/login')
       .get().expect(200).expect('has csrf token', function(err, res, body) {
-	var re = /data-csrf="(.*?)"/;
+        var re = /data-csrf="(.*?)"/;
         var match = body.match(re);
-	console.log('FOOOO', match[1]);
         assert.equal(match[1], '1234', "csrf exists in HTML");
       })
     .next().unpath()

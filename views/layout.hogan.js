@@ -31,7 +31,7 @@
           {{#user}}
             <ul class="nav pull-right">
               <li class="user">{{attributes.email}}</li>
-	      <li><a class="js-persona-logout">Sign Out</a></li>
+              <li><a class="js-persona-logout">Sign Out</a></li>
             </ul>
           {{/user}}
         </div>

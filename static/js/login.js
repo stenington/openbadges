@@ -33,9 +33,9 @@
 
     $('.js-persona-login').click(function(){
       navigator.id.request({
-	siteName: 'Open Badge Backpack',
-	termsOfService: '/tou.html',
-	privacyPolicy: '/privacy.html'
+        siteName: 'Open Badge Backpack',
+        termsOfService: '/tou.html',
+        privacyPolicy: '/privacy.html'
       });
     });
     $('.js-persona-logout').click(function(){
@@ -50,33 +50,33 @@
     navigator.id.watch({
       loggedInEmail: loggedInEmail,
       onlogin: function(assertion){
-	if (!assertion) return false;
-	jQuery.post(
-	  '/backpack/authenticate',
-	  { _csrf: csrf,
-	    assertion: assertion
-	  },
-	  function(){ window.location = '/'; },
-	  'json'
-	)
-	.error(function(xhr){
-	  var reason;
-	  try {
-	    /* Try to parse it as a server error */
-	    var err = jQuery.parseJSON(xhr.responseText);
-	    reason = err.reason;
-	  }
-	  catch (ex) {
-	    /* Otherwise it's likely that transmission failed */
-	    reason = "Transmission error; please try again later.";
-	  }
-	  /* TODO: give user feedback? */
-	  console.log('Login error:', reason);
-	});
+        if (!assertion) return false;
+        jQuery.post(
+          '/backpack/authenticate',
+          { _csrf: csrf,
+          assertion: assertion
+          },
+          function(){ window.location = '/'; },
+          'json'
+        )
+        .error(function(xhr){
+          var reason;
+          try {
+            /* Try to parse it as a server error */
+            var err = jQuery.parseJSON(xhr.responseText);
+            reason = err.reason;
+          }
+          catch (ex) {
+            /* Otherwise it's likely that transmission failed */
+            reason = "Transmission error; please try again later.";
+          }
+          /* TODO: give user feedback? */
+          console.log('Login error:', reason);
+        });
 
       },
       onlogout: function(){
-	window.location = '/backpack/signout';
+        window.location = '/backpack/signout';
       }
     });
   });
