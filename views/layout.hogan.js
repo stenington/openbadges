@@ -16,8 +16,9 @@
     <script type="text/javascript" src="/js/modernizr.js"></script>
     <script type="text/javascript" src="https://login.persona.org/include.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/login.js"></script>
   </head>
-  <body>
+  <body data-user="{{ user.attributes.email }}">
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container" style="position: relative;">
@@ -30,7 +31,7 @@
           {{#user}}
             <ul class="nav pull-right">
               <li class="user">{{attributes.email}}</li>
-              <li><a href="{{#reverse}}backpack.signout{{/reverse}}">Sign Out</a></li>
+	      <li><a class="js-persona-logout">Sign Out</a></li>
             </ul>
           {{/user}}
         </div>
