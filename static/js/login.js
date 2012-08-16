@@ -60,7 +60,18 @@
 	  'json'
 	)
 	.error(function(xhr){
-	  console.log('ERROR', xhr.responseText);
+	  var reason;
+	  try {
+	    /* Try to parse it as a server error */
+	    var err = jQuery.parseJSON(xhr.responseText);
+	    reason = err.reason;
+	  }
+	  catch (ex) {
+	    /* Otherwise it's likely that transmission failed */
+	    reason = "Transmission error; please try again later.";
+	  }
+	  /* TODO: give user feedback? */
+	  console.log('Login error:', reason);
 	});
 
       },
