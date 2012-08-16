@@ -30,12 +30,12 @@
   var $ = jQuery;
 
   $(document).ready(function(){
+
     $('.js-persona-login').click(function(){
       navigator.id.request({
-	/* TODO: make use of fancy new options, like:
-	siteName: 'Backpack',
-	oncancel: function(){return;},
-	*/
+	siteName: 'Open Badges Backpack',
+	termsOfService: '/tou.html',
+	privacyPolicy: '/privacy.html'
       });
     });
     $('.js-persona-logout').click(function(){
