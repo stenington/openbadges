@@ -29,7 +29,7 @@
 
   jQuery(document).ready(function(){
 
-    jQuery(js-persona-login').click(function(){
+    jQuery('.js-persona-login').click(function(){
       navigator.id.request({
         siteName: 'Open Badge Backpack',
         termsOfService: '/tou.html',
@@ -37,13 +37,13 @@
         returnTo: '/'
       });
     });
-    jQuery(js-persona-logout').click(function(){
+    jQuery('.js-persona-logout').click(function(){
       navigator.id.logout();
       return false;
     });
 
-    var loggedInEmail = jQuery(data-user]').attr('data-user') || null;
-    var csrf = jQuery(data-csrf]').attr('data-csrf');
+    var loggedInEmail = jQuery('[data-user]').attr('data-user') || null;
+    var csrf = jQuery('[data-csrf]').attr('data-csrf');
 
     /* TODO: pull out paths into config to come through templates, using reverse lookup */
     navigator.id.watch({
