@@ -6,8 +6,7 @@ var middleware = require('./middleware');
 var logger = require('./lib/logging').logger;
 var configuration = require('./lib/configuration');
 var router = require('./lib/router');
-var hogan = require('hogan.js');
-var hoganadapter = require('./lib/hogan-express.js');
+var hulk = require('hulk-hogan');
 
 var app = express.createServer();
 app.logger = logger;
@@ -15,7 +14,7 @@ app.config = configuration;
 
 // default view engine
 app.set('view engine', 'hogan.js');
-app.register('hogan.js', hoganadapter.init(hogan));
+app.register('hogan.js', hulk);
 
 // View helpers. `user` and `badges` are set so we can use them in `if`
 // statements without getting undefined errors and without having to use typeof
