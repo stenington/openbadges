@@ -14,6 +14,7 @@ app.config = configuration;
 
 // default view engine
 app.set('view engine', 'hogan.js');
+app.set('view options', {layout: false});
 app.register('hogan.js', hulk);
 
 // View helpers. `user` and `badges` are set so we can use them in `if`
