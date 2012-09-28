@@ -1,5 +1,5 @@
-//var dbm = require('db-migrate');
-//var type = dbm.dataType;
+var dbm = require('db-migrate');
+var type = dbm.dataType;
 var _ = require("lodash");
 var schemas = require("../models/mysql-schemas");
 
