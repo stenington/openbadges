@@ -88,4 +88,12 @@
   <!-- end right column -->
 
 </div>
+<script src="/js/underscore.js"></script>
+<script src="/js/backbone.js"></script>
+<script>
+var Badge = Backbone.Model.extend({
+  urlRoot: '/badge'
+});
+var badge = new Badge({{ attributesString }});
+</script>
 {% endblock %}
