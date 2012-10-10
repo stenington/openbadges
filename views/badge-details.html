@@ -65,9 +65,8 @@
         {% include "../static/js/views/notesview.html" %}
       </div>
 
-      <div class="span4 et">
-        <button class="btn">Disown This Badge</button>
-        <a href="#">What is this?</a>
+      <div class="span4 et disownContainer">
+        {% include "../static/js/views/disownview.html" %}
       </div>
 
     </div>
@@ -100,12 +99,17 @@
 </script>
 <script src="/js/model/badge.js"></script>
 <script src="/js/views/notesview.js"></script>
+<script src="/js/views/disownview.js"></script>
 <script>
   $(function(){
     var badge = new Badge({{ attributesString }});
     var notes = new NotesView({
       model: badge,
       el: $('.notesContainer')[0]
+    });
+    var disown = new DisownView({
+      model: badge,
+      el: $('.disownContainer')[0]
     });
   });
 </script>

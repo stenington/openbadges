@@ -1,0 +1,27 @@
+<div class="control">
+  <button class="btn disown">Disown This Badge</button>
+  <a href="#">What is this?</a>
+</div>
+<div class="dialog lightbox confirm">
+  <div class="contents">
+    <header>
+      <h2>Disown this badge?</h2>
+      <span class='close'>&times;</span>
+    </header>
+    <div class="body">
+      <p>
+        This will remove the <b>{{attributes.body.badge.name}}</b>
+        badge from your account. It will also be
+        removed from all groups. The only way to get this badge back will be
+        to go to the place where it was issued
+        (<a href="{{attributes.body.badge.issuer.origin}}">{{attributes.body.badge.issuer.name}}</a>)
+        and get it re-issued.
+      </p>
+
+      <div class="buttons">
+        <button class="btn nope">Nevermind, I want to keep this badge</button>
+        <button class="btn yep btn-danger">Yes, remove this badge</button>
+      </div>
+    </div>
+  </div>
+</div>
