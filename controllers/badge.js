@@ -64,9 +64,6 @@ exports.destroy = function destroy(request, response) {
 function showPage(response, opts) {
   response.render('badge-details.html', {
     attributes: opts.badge.attributes,
-    assertion: opts.badge.attributes.body,
-    badge: opts.badge.attributes.body.badge,
-    issuer: opts.badge.attributes.body.badge.issuer,
     owner: opts.owner,
     editing: opts.editing
   });
