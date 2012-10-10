@@ -61,11 +61,8 @@
     {% if editing %}
     <div class="row st">
 
-      <div class="span4">
-        <h2>Badge Notes</h2>
-        <textarea class="panel span4" rows="6"
-          placeholder="Enter your own notes for this badge"></textarea>
-        <button class="btn">Save Notes</button>
+      <div class="span4 notesContainer">
+        {% include "../static/views/badge-notes.html" %}
       </div>
 
       <div class="span4 et">
@@ -90,10 +87,38 @@
 </div>
 <script src="/js/underscore.js"></script>
 <script src="/js/backbone.js"></script>
+<script src="/js/nunjucks-dev.js"></script>
 <script>
-var Badge = Backbone.Model.extend({
-  urlRoot: '/badge'
-});
-var badge = new Badge({{ attributesString }});
+  if(!nunjucks.env) {
+    // If not precompiled, create an environment with an HTTP loader
+    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/views'));
+  }
+  var templates = nunjucks.env;
+
+  var Badge = Backbone.Model.extend({
+    urlRoot: '/badge'
+  });
+  var NotesView = Backbone.View.extend(
+    {
+      initialize: function(){
+        this.render();
+      },
+
+      render: function(){
+        var content = templates.render(NotesView.template, this.model.toJSON());
+        this.$el.html(content);
+      }
+    },
+    {
+      template: 'badge-notes.html'
+    }
+  );
+  $(function(){
+    var badge = new Badge({{ attributesString }});
+    var notes = new NotesView({
+      model: badge,
+      el: $('.notesContainer')[0]
+    });
+  });
 </script>
 {% endblock %}
