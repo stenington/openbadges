@@ -1,0 +1,51 @@
+/* Badge image and information table display */
+.badgeInfo {
+  header {
+    overflow: hidden;
+
+    .badgeImg {
+      float: left;
+      margin-right: @sectionSpacing;
+    }
+    .description {
+      overflow: hidden;
+    }
+  }
+
+  .details {
+    margin-top: @sectionSpacing;
+    overflow: hidden;
+
+    table {
+      width: 100%;
+      margin-bottom: @elementSpacing;
+      border-bottom: @separator;
+
+      tr {
+        th {
+          padding-bottom: @elementSpacing;
+          font-size: 1.2em;
+          text-align: left;
+        }
+        td:first-child {
+          /* label cells */
+          padding-right: @sectionSpacing;
+          font-weight: bold;
+          white-space: nowrap;
+        }
+        td:last-child {
+          /* data cells */
+          width: 100%; /* shrinks label cells to contents */
+        }
+      }
+      tr:last-child {
+        td {
+          padding-bottom: @elementSpacing; /* spacing above bottom border */
+        }
+      }
+    }
+    table:last-child {
+      border-bottom: none;
+    }
+  }
+}
