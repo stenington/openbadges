@@ -67,7 +67,8 @@ function showPage(response, opts) {
     attributes: opts.badge.attributes,
     attributesString: JSON.stringify(opts.badge.attributes),
     owner: opts.owner,
-    editing: opts.editing
+    editing: opts.editing,
+    csrfToken: opts._csrf
   });
 }
 
@@ -95,7 +96,8 @@ exports.edit = function show(request, response) {
   showPage(response, {
     badge: request.badge,
     owner: owner,
-    editing: true
+    editing: true,
+    _csrf: request.session._csrf
   });
 };
 

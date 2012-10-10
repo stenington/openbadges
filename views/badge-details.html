@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<form>
+  <input type="hidden" name="_csrf" value="{{ csrfToken }}"></input>
+</form>
+
 {% if owner %}
 {% if not editing %}
 <div class="row">
@@ -101,6 +105,21 @@
 <script src="/js/views/notesview.js"></script>
 <script src="/js/views/disownview.js"></script>
 <script>
+  !!function setup () {
+
+  var CSRF = $("input[name='_csrf']").val();
+  $.ajaxSetup({
+    beforeSend: function (xhr, settings) {
+      if (settings.crossDomain)
+        return;
+      if (settings.type == "GET")
+        return;
+      xhr.setRequestHeader('X-CSRF-Token', CSRF)
+    }
+  })
+
+  }(/*end setup*/)
+
   $(function(){
     var badge = new Badge({{ attributesString }});
     var notes = new NotesView({
@@ -109,7 +128,9 @@
     });
     var disown = new DisownView({
       model: badge,
-      el: $('.disownContainer')[0]
+      el: $('.disownContainer')[0],
+      success: function(){ console.log('woot'); window.location = "{{ reverse('backpack.manage') }}"; },
+      error: function(){ console.log("DO SOMETHING MOAR USEFUL!"); }
     });
   });
 </script>

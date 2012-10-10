@@ -4,9 +4,12 @@ var DisownView = Backbone.View.extend(
       'click .disown': 'showConfirmation',
       'click .nope': 'hideConfirmation',
       'click .close': 'hideConfirmation',
+      'click .yep': 'disown'
     },
 
-    initialize: function(){
+    initialize: function(opts){
+      this.success = opts.success || function(){};
+      this.error = opts.error || function(){};
       this.render();
     },
 
@@ -21,6 +24,13 @@ var DisownView = Backbone.View.extend(
 
     hideConfirmation: function(){
       this.$el.find('.confirm').fadeOut('fast');
+    },
+
+    disown: function(){
+      this.model.destroy({
+        success: this.success,
+        error: this.error
+      });
     }
   },
   {
