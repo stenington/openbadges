@@ -62,6 +62,7 @@ exports.destroy = function destroy(request, response) {
  * should normalize the data here for presentation.
  */
 function showPage(response, opts) {
+  opts.badge.attributes.notes = "Initial note";
   response.render('badge-details.html', {
     attributes: opts.badge.attributes,
     attributesString: JSON.stringify(opts.badge.attributes),

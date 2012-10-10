@@ -105,7 +105,7 @@
       },
 
       render: function(){
-        var content = templates.render(NotesView.template, this.model.toJSON());
+        var content = templates.render(NotesView.template, { attributes: this.model.toJSON() });
         this.$el.html(content);
       }
     },
