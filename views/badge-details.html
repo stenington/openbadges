@@ -62,7 +62,7 @@
     <div class="row st">
 
       <div class="span4 notesContainer">
-        {% include "../static/views/badge-notes.html" %}
+        {% include "../static/js/views/notesview.html" %}
       </div>
 
       <div class="span4 et">
@@ -85,42 +85,22 @@
   <!-- end right column -->
 
 </div>
+{% endblock %}
+
+{% block bodyscripts %}
 <script src="/js/underscore.js"></script>
 <script src="/js/backbone.js"></script>
 <script src="/js/nunjucks-dev.js"></script>
 <script>
   if(!nunjucks.env) {
     // If not precompiled, create an environment with an HTTP loader
-    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/views'));
+    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/js/views'));
   }
   var templates = nunjucks.env;
-
-  var Badge = Backbone.Model.extend({
-    urlRoot: '/badge'
-  });
-  var NotesView = Backbone.View.extend(
-    {
-      events: {
-        'click .save': 'save'
-      },
-
-      initialize: function(){
-        this.render();
-      },
-
-      render: function(){
-        var content = templates.render(NotesView.template, { attributes: this.model.toJSON() });
-        this.$el.html(content);
-      },
-
-      save: function(){
-        this.model.save({notes: this.$el.find('.noteText').val()});
-      }
-    },
-    {
-      template: 'badge-notes.html'
-    }
-  );
+</script>
+<script src="/js/model/badge.js"></script>
+<script src="/js/views/notesview.js"></script>
+<script>
   $(function(){
     var badge = new Badge({{ attributesString }});
     var notes = new NotesView({
