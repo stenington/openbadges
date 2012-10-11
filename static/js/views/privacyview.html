@@ -1,0 +1,31 @@
+<h2>Privacy</h2>
+<div class="media">
+{% if attributes.public %}
+  <img class="icon img" src="/images/unlocked.svg" alt="unlocked" />
+{% else %}
+  <img class="icon img" src="/images/locked.svg" alt="locked" />
+{% endif %}
+  <div class="bd">
+    <ul class="unstyled">
+    {% if attributes.public %}
+      <li>
+        This badge is public. <a class="change-state">Make it private</a>.
+      <li>
+        <small>
+          Publicly accessible URL:
+          <a href="#">http://obx.org/565656</a>
+        </small>
+      </li>
+      <li>
+        <small>
+          <a href="">Preview public view of badge</a>
+        </small>
+      </li>
+    {% else %}
+      <li>
+        This badge is private. <a class="change-state">Make it public</a>.
+      </li>
+    {% endif %}
+    </ul>
+  </div>
+</div>

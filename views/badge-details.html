@@ -81,8 +81,10 @@
   <!-- right column -->
   {% if editing %}
   <div class="span4 column">
-    Right.
-  </div>
+    <div class="privacyContainer">
+      {% include "../static/js/views/privacyview.html" %}
+    </div>
+  </div> 
   {% endif %}
   <!-- end right column -->
 
@@ -103,6 +105,7 @@
 <script src="/js/model/badge.js"></script>
 <script src="/js/views/notesview.js"></script>
 <script src="/js/views/disownview.js"></script>
+<script src="/js/views/privacyview.js"></script>
 <script>
   !!function setup () {
 
@@ -130,6 +133,10 @@
       el: $('.disownContainer')[0],
       success: function(){ window.location = "{{ reverse('backpack.manage') }}"; },
       error: function(){ console.log("DO SOMETHING MOAR USEFUL!"); }
+    });
+    var privacy = new PrivacyView({
+      model: badge,
+      el: $('.privacyContainer')[0]
     });
   });
 </script>
