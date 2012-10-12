@@ -50,7 +50,7 @@ var schemas = {
 
 exports.up = function(db, callback) {
   var pending = _.size(schemas);
-  _.forEach(schemas, function(schema) {
+  _.forEach(schemas, function(schema) {            
     db.all(schema, function(err, results) {
       -- pending;
       if(!pending) {
