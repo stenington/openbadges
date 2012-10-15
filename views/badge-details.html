@@ -65,11 +65,11 @@
     <div class="row st">
 
       <div class="span4 notesContainer">
-        {% include "backbone/notesview.html" %}
+        {% include "templates/notesview.html" %}
       </div>
 
       <div class="span4 et disownContainer">
-        {% include "backbone/disownview.html" %}
+        {% include "templates/disownview.html" %}
       </div>
 
     </div>
@@ -83,7 +83,7 @@
   <div class="span4 column">
 
     <div class="privacyContainer">
-      {% include "backbone/privacyview.html" %}
+      {% include "templates/privacyview.html" %}
     </div>
   </div> 
   {% endif %}
@@ -99,14 +99,14 @@
 <script>
   if(!nunjucks.env) {
     // If not precompiled, create an environment with an HTTP loader
-    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/backbone'));
+    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/templates'));
   }
   var templates = nunjucks.env;
 </script>
-<script src="/js/model/badge.js"></script>
-<script src="/js/views/notesview.js"></script>
-<script src="/js/views/disownview.js"></script>
-<script src="/js/views/privacyview.js"></script>
+<script src="/js/backbone/models/badge.js"></script>
+<script src="/js/backbone/views/notes.js"></script>
+<script src="/js/backbone/views/disown.js"></script>
+<script src="/js/backbone/views/privacy.js"></script>
 <script>
   !!function setup () {
 
