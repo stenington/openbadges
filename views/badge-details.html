@@ -65,11 +65,11 @@
     <div class="row st">
 
       <div class="span4 notesContainer">
-        {% include "../static/js/views/notesview.html" %}
+        {% include "backbone/notesview.html" %}
       </div>
 
       <div class="span4 et disownContainer">
-        {% include "../static/js/views/disownview.html" %}
+        {% include "backbone/disownview.html" %}
       </div>
 
     </div>
@@ -81,8 +81,9 @@
   <!-- right column -->
   {% if editing %}
   <div class="span4 column">
+
     <div class="privacyContainer">
-      {% include "../static/js/views/privacyview.html" %}
+      {% include "backbone/privacyview.html" %}
     </div>
   </div> 
   {% endif %}
@@ -98,7 +99,7 @@
 <script>
   if(!nunjucks.env) {
     // If not precompiled, create an environment with an HTTP loader
-    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/js/views'));
+    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/backbone'));
   }
   var templates = nunjucks.env;
 </script>
