@@ -56,9 +56,14 @@ var scope = nock('http://example.com')
   }), { 'Content-Type': 'application/json' })
 ;
 
-mysql.prepareTesting();
-vows.describe('baker controller testing').addBatch({
+vows.describe('baker controller testing').addBatch({  
   '#baker called with a' : {
+    topic: function() {
+      mysql.prepareTesting(this.callback);
+    },
+    'complete': function() {
+    },
+    /*
     'missing assertion url': {
       topic : function () {
         conmock(controller.baker, {}, this.callback);
@@ -129,6 +134,7 @@ vows.describe('baker controller testing').addBatch({
         mock.status.should.equal(200);
       }
     },
+    */
     'valid assertion, valid image url, trying to award': {
       topic : function () {
         var req = { query: { assertion: 'http://example.com/legit-award.json', award: 'brian@example.com' } };
@@ -139,7 +145,7 @@ vows.describe('baker controller testing').addBatch({
         mock.headers.should.have.property('x-badge-awarded', 'brian@example.com');
         mock.status.should.equal(200);
       }
-    },
+    }/*,
     'Valid assertion url, but invalid assertion content':{
       topic: function(){
         var req = { query: { assertion: 'http://example.com/invalidAssertion'}};
@@ -150,5 +156,6 @@ vows.describe('baker controller testing').addBatch({
         mock.body.should.match(/invalid/);
       }
     }
+    */
   }
 }).export(module);
