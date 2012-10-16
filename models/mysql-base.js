@@ -91,7 +91,7 @@ Base.prototype.save = function save(callback) {
   }
 
   callback = callback || function () {};
-  if (err) { return callback(err, null); }
+  if (err) { return callback(null, err); }
 
   Object.keys(attributes).forEach(function (key) {
     var prep = prepMethods[key];
@@ -100,7 +100,6 @@ Base.prototype.save = function save(callback) {
 
   if ('function' === typeof this.presave)
     this.presave();
-  
   client._upsert(table, attributes, parseResult.bind(this));
 };
 
