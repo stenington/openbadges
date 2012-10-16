@@ -91,7 +91,7 @@ Base.prototype.save = function save(callback) {
   }
 
   callback = callback || function () {};
-  if (err) { return callback(null, err); }
+  if (err) { return callback(err, null); }
 
   Object.keys(attributes).forEach(function (key) {
     var prep = prepMethods[key];

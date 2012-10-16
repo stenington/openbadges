@@ -113,5 +113,4 @@ suite
             })
           .next()
           .undiscuss();
-console.log(suite.batches);
 suite.export(module);
