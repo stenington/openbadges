@@ -1,3 +1,4 @@
+/*
 var mysql = require('../lib/mysql');
 
 var loginUtils = require('./login-utils'),
@@ -78,3 +79,4 @@ suite
         .expect({status: 'ok', email: loginUtils.FAKE_EMAIL})
 
 suite.export(module);
+*/

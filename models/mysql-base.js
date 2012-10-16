@@ -23,7 +23,7 @@ Base.apply = function apply(Model, table) {
     });
   };
 
-  Model.find = function find(criteria, callback) {    
+  Model.find = function find(criteria, callback) {
     var finders = Model.finders || {};
     var keys = Object.keys(criteria);    
     var firstKey = keys[0];
