@@ -124,7 +124,7 @@
   }(/*end setup*/)
 
   $(function(){
-    var badge = new Badge({{ attributesString }});
+    var badge = new Badge({{ attributes|stringify }});
     var notes = new NotesView({
       model: badge,
       el: $('.notesContainer')[0]

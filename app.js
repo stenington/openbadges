@@ -9,6 +9,7 @@ var configuration = require('./lib/configuration');
 var router = require('./lib/router');
 var flash = require('connect-flash');
 var nunjucks = require('nunjucks');
+var filters = require('./lib/filters');
 
 var app = express();
 app.logger = logger;
@@ -22,6 +23,7 @@ app.locals({
 
 // default view engine
 var env = new nunjucks.Environment(new nunjucks.FileSystemLoader('views'));
+env.addFilter('stringify', filters.stringify);
 env.express(app);
 
 // Middleware. See `middleware.js`
