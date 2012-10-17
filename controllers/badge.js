@@ -1,4 +1,5 @@
 var Badge = require('../models/badge');
+var Group = require('../models/group');
 var logger = require('../lib/logging').logger;
 
 function respond(status, message) {
@@ -61,16 +62,24 @@ exports.destroy = function destroy(request, response) {
  * Right now we just chuck the badge in there; in the future we
  * should normalize the data here for presentation.
  */
-function showPage(response, opts) {
-  opts.badge.attributes.notes = "Initial note";
-  opts.badge.attributes.public = opts.badge.attributes.id % 2 === 0 ? true : false;
-  response.render('badge-details.html', {
-    attributes: opts.badge.attributes,
-    attributesString: JSON.stringify(opts.badge.attributes),
-    owner: opts.owner,
-    editing: opts.editing,
-    csrfToken: opts._csrf
-  });
+function badgeDetails(opts){
+  return function(request, response){
+    var user = request.user;
+    var owner = user && request.badge.get('user_id') === user.get('id');
+    var groups = user && Group.find({user_id: user.get('id')}, function(err, groups){
+      if(err)
+        console.log('err', err);
+      groups = groups.map(function(group){ return group.attributes; });
+      request.badge.attributes.notes = "Initial note";
+      response.render('badge-details.html', {
+        attributes: request.badge.attributes,
+        groups: groups,
+        owner: owner,
+        editing: opts.editing,
+        csrfToken: request.session._csrf
+      });
+    });
+  };
 }
 
 /**
@@ -78,27 +87,12 @@ function showPage(response, opts) {
  * Show the public view, logged in or not
  * Owner will see a preview message
  */
-exports.show = function show(request, response) {
-  var owner = request.user && request.badge.get('user_id') === request.user.get('id');
-  showPage(response, {
-    badge: request.badge,
-    owner: owner,
-    editing: false
-  });
-};
+exports.show = badgeDetails({editing: false});
 
 /**
  * STUB: Individual badge edit view
  * Show the badge with edit fields, owner only
  * Non-owner should be denied/redirected
  */
-exports.edit = function show(request, response) {
-  var owner = request.user && request.badge.get('user_id') === request.user.get('id');
-  showPage(response, {
-    badge: request.badge,
-    owner: owner,
-    editing: true,
-    _csrf: request.session._csrf
-  });
-};
+exports.edit = badgeDetails({editing: true});
 
