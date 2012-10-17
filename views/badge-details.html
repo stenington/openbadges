@@ -129,7 +129,7 @@
     var disown = new DisownView({
       model: badge,
       el: $('.disownContainer')[0],
-      success: function(){ console.log('woot'); window.location = "{{ reverse('backpack.manage') }}"; },
+      success: function(){ window.location = "{{ reverse('backpack.manage') }}"; },
       error: function(){ console.log("DO SOMETHING MOAR USEFUL!"); }
     });
   });
