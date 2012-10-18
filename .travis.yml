@@ -9,6 +9,7 @@ notifications:
     recipients:
       - openbadges+ci@mozilla.com
 before_script:
+  - export OPENBADGES_BASE=`pwd`
   - source .puppet-manifests/files/env.sh
   - mysql -e 'create database openbadges;'
   - mysql -e 'create database test_openbadges;'

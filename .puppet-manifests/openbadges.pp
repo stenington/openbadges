@@ -51,9 +51,15 @@ class openbadges::app ($node_version) {
     creates => "/home/vagrant/env.sh",
   }
 
+  exec { "set-base-env":
+    command => "echo 'export OPENBADGES_BASE=/home/vagrant/openbadges' >> /home/vagrant/.bashrc",
+    onlyif => "grep -q 'OPENBADGES_BASE' /home/vagrant/.bashrc; test $? -eq 1",
+  }
+
   exec { "source-env-vars":
     command => "echo 'source /home/vagrant/env.sh' >> /home/vagrant/.bashrc",
     onlyif => "grep -q 'source /home/vagrant/env.sh' /home/vagrant/.bashrc; test $? -eq 1",
+    require => Exec["set-base-env"],
   }
   
   file { "/usr/bin/start-server":

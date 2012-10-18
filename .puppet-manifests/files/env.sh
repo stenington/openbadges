@@ -1,3 +1,7 @@
+# This script relies on OPENBADGES_BASE already existing in the
+# environment, pointing to your openbadges installation directory.
+# ----- 
+
 export NODE_ENV=development
 
 # either http or https
@@ -13,14 +17,11 @@ export OPENBADGES_HOSTNAME=localhost
 # of node.
 export OPENBADGES_PORT=8888
 
-# openbadges base directory
-export OPENBADGES_DIRNAME=/home/vagrant/openbadges
-
 # Various files related to cookie management and other things are saved here.
-export OPENBADGES_VAR_PATH=$OPENBADGES_DIRNAME/var
+export OPENBADGES_VAR_PATH=$OPENBADGES_BASE/var
 
 # Where to cache badge images from the issued badges
-export OPENBADGES_BADGE_PATH=$OPENBADGES_DIRNAME/static/_badges
+export OPENBADGES_BADGE_PATH=$OPENBADGES_BASE/static/_badges
 
 # Administrators, users with these accounts can access certain pages
 export OPENBADGES_ADMINS=[example@example.com]
