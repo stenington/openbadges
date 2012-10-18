@@ -32,7 +32,6 @@ class openbadges::app ($node_version) {
   npm { "vows": }
   npm { "jshint": }
   npm { "up": }
-  npm { "recess": }
   
   file { "package.json":
     path => "/home/vagrant/package.json",
@@ -45,11 +44,16 @@ class openbadges::app ($node_version) {
     command => "npm install .",
     require => Exec['install-node'],
   }
-  
-  exec { "copy-local-dist":
-    cwd => "/home/vagrant/openbadges/lib/environments",
-    command => "cp local-dist.js local.js",
-    creates => "/home/vagrant/openbadges/lib/environments/local.js",
+
+  exec { "copy-env-vars-sh":
+    cwd => "/tmp/vagrant-puppet/manifests/files",
+    command => "cp env.sh /home/vagrant/env.sh",
+    creates => "/home/vagrant/env.sh",
+  }
+
+  exec { "source-env-vars":
+    command => "echo 'source /home/vagrant/env.sh' >> /home/vagrant/.bashrc",
+    onlyif => "grep -q 'source /home/vagrant/env.sh' /home/vagrant/.bashrc; test $? -eq 1",
   }
   
   file { "/usr/bin/start-server":

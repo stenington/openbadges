@@ -9,7 +9,7 @@ notifications:
     recipients:
       - openbadges+ci@mozilla.com
 before_script:
-  - cp lib/environments/local-dist.js lib/environments/local.js
+  - source .puppet-manifests/files/env.sh
   - mysql -e 'create database openbadges;'
   - mysql -e 'create database test_openbadges;'
   - mysql -uroot -e "grant all on openbadges.* to 'badgemaker'@'localhost' identified by 'secret'"

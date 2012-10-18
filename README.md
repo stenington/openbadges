@@ -103,18 +103,15 @@ and then back in windows you can fire up your favourite browser and connect to t
         CREATE DATABASE test_openbadges;
         GRANT ALL PRIVILEGES ON test_openbadges.* to badgemaker@localhost IDENTIFIED BY 'secret';
 
-2. Copy the `openbadges/lib/environments/local-dist.js` to
-   `openbadges/lib/environments/local.js` and edit the configuration to match
-   your local development environment. The MySQL database credentials should
-   match step #1. For example:
+2. Setup environment variables to match your local development environment.
+   Look in `.puppet-manifests/files/env.sh` to see what you'll need to set.
+   The MySQL database credentials should match step #1. For example:
 
-        database: {
-          driver: 'mysql',
-          host: '127.0.0.1',
-          user: 'badgemaker',
-          password: 'secret',
-          database: 'openbadges'
-        },
+        OPENBADGES_DATABASE_DRIVER=mysql
+        OPENBADGES_DATABASE_HOST=127.0.0.1
+        OPENBADGES_DATABASE_USER=badgemaker
+        OPENBADGES_DATABASE_PASSWORD=secret
+        OPENBADGES_DATABASE_DATABASE=openbadges
 
 3. Install local dependencies: `npm install`
 
@@ -129,9 +126,9 @@ you have any problems setting up the environment, feel free to post a message to
 ### Optional: A real hostname
 
 I like to be able to use http://openbadges.local for accessing the
-project. Assuming you used vagrant, you can change the hostname in `local.js`
-and do `sudo echo "33.33.33.11 openbadges.local" >> /etc/hosts` to make it
-happen. If you're on OS X, you can also use
+project. Assuming you used vagrant, you can change the `OPENBADGES_HOSTNAME` in 
+your environment and do `sudo echo "33.33.33.11 openbadges.local" >> /etc/hosts` 
+to make it happen. If you're on OS X, you can also use
 [Gas Mask](http://code.google.com/p/gmask/) for temporary hosts file switching
 rather than having to manually edit /etc/hosts
 
