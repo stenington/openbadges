@@ -1,4 +1,5 @@
 <select>
+  <option value='' selected disabled>Choose a group</option>
 {% for group in availableGroups %}
   <option value="{{ group.id }}">{{ group.name }}</option>
 {% endfor %}
