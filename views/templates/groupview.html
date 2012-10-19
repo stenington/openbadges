@@ -1,0 +1,20 @@
+<h2>Groups</h2>
+<div class="listing">
+  <ul class="unstyled">
+  {% if not currentGroups.length %}
+    <li>This badge does not belong to any groups.</li>
+  {% else %}
+    {% for group in currentGroups %}
+    <li>{{group.name}}</li> 
+    {% endfor %}
+  {% endif %}
+  </ul>
+</div>
+<div class="selectorControls">
+  <div class="prompt">
+    <a class="add">Add it to a group</a>.
+  </div>
+  <div class="selector">
+    <!-- hidden on initial render, no content needed initially -->
+  </div>
+</div>

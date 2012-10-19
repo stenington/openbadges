@@ -85,6 +85,11 @@
     <div class="privacyContainer">
       {% include "templates/privacyview.html" %}
     </div>
+
+    <div class="groupContainer">
+      {% include "templates/groupview.html" %}
+    </div>
+
   </div> 
   {% endif %}
   <!-- end right column -->
@@ -104,9 +109,11 @@
   var templates = nunjucks.env;
 </script>
 <script src="/js/backbone/models/badge.js"></script>
+<script src="/js/backbone/models/group.js"></script>
 <script src="/js/backbone/views/notes.js"></script>
 <script src="/js/backbone/views/disown.js"></script>
 <script src="/js/backbone/views/privacy.js"></script>
+<script src="/js/backbone/views/groupview.js"></script>
 <script>
   !!function setup () {
 
@@ -138,6 +145,13 @@
     var privacy = new PrivacyView({
       model: badge,
       el: $('.privacyContainer')[0]
+    });
+
+    var allGroups = new GroupCollection({{ groups|stringify }});
+    var groups = new GroupView({
+      collection: allGroups,
+      el: $('.groupContainer')[0],
+      badgeId: badge.get('id')
     });
   });
 </script>

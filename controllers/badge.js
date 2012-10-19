@@ -74,6 +74,9 @@ function badgeDetails(opts){
       response.render('badge-details.html', {
         attributes: request.badge.attributes,
         groups: groups,
+        currentGroups: groups.filter(function(group){ 
+          return group.badges.indexOf(request.badge.attributes.id) !== -1;
+        }),
         owner: owner,
         editing: opts.editing,
         csrfToken: request.session._csrf

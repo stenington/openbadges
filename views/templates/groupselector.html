@@ -1,0 +1,6 @@
+<select>
+{% for group in availableGroups %}
+  <option value="{{ group.id }}">{{ group.name }}</option>
+{% endfor %}
+</select>
+<button class="btn save">Save</button>
