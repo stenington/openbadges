@@ -12,8 +12,25 @@
   <a class="js-browserid-link" href="#"><img src="https://browserid.org/i/sign_in_green.png"/></a>
 </div>
 
+<script src="/js/require-config.js"></script>
+<script src="/js/require.min.js"></script>
 <script type="text/javascript">
-!!function loginHandler () {
+  require(['browserid-ajax', 'jquery'], function(BrowserIDAjax, $){
+    var browserid = BrowserIDAjax({
+      email: '',
+      verifyURL: '/backpack/authenticate',
+      logoutURL: '/backpack/signout',
+      csrfToken: '{{ csrfToken }}'
+    }).on('login:error', function() {
+      console.log('error');
+    }).on('login', function() {
+      console.log('woot');
+      window.location = '/';
+    });
+
+    $('.js-browserid-link').bind('click', function(){ browserid.login(); });
+  });
+/*!!function loginHandler () {
 //begin login handler
 
   function launchBrowserId(callback) {
@@ -33,5 +50,6 @@
 
 //begin login handler scope
 }();
+*/
 </script>
 {% endblock %}

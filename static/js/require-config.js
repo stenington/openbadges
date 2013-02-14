@@ -1,8 +1,12 @@
 var require = {
   baseUrl: "js",
   shim: {
+    'jquery': {
+      exports: 'jQuery'
+    }
   },
   paths: {
+    'jquery': 'jquery.min',
     'test': '../test'
   }
 };
