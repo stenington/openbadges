@@ -17,6 +17,9 @@ var Group = require('../models/group');
  */
 
 exports.login = function login(request, response) {
+  if (request.user)
+    return response.redirect('/', 303);
+
   // request.flash returns an array. Pass on the whole thing to the view and
   // decide there if we want to display all of them or just the first one.
   response.render('login.html', {
@@ -85,7 +88,10 @@ exports.authenticate = function authenticate(request, response) {
 
 exports.signout = function signout(request, response) {
   request.session = {};
-  response.redirect('/backpack/login', 303);
+  if (request.xhr)
+    response.json(200);
+  else
+    response.redirect('/backpack/login', 303);
 };
 
 /**

@@ -118,6 +118,7 @@ app.get('/', backpack.manage);
 app.get('/backpack', backpack.manage)
 app.get('/backpack/login', backpack.login);
 app.get('/backpack/signout', backpack.signout);
+app.post('/backpack/signout', backpack.signout);
 app.post('/backpack/badge', backpack.userBadgeUpload);
 app.post('/backpack/authenticate', backpack.authenticate);
 app.get('/stats', backpack.stats);

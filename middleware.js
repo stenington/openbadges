@@ -115,9 +115,10 @@ exports.csrf = function (options) {
   var value = options.value || defaultValue;
   var list = options.whitelist;
   return function (req, res, next) {
+    var token = res.locals.csrfToken = req.session._csrf || (req.session._csrf = utils.uid(24));
+
     if (whitelisted(list, req.url)) return next();
 
-    var token = req.session._csrf || (req.session._csrf = utils.uid(24));
     if ('GET' == req.method || 'HEAD' == req.method) return next();
     var val = value(req);
     if (val != token) {

@@ -2,7 +2,10 @@ var require = {
   baseUrl: "js",
   shim: {
     'jquery': {
-      exports: 'jQuery'
+      exports: 'jQuery',
+      init: function() {
+        this.jQuery.noConflict();
+      }
     }
   },
   paths: {

@@ -28,7 +28,7 @@ if(!nunjucks.env) {
 }(/*end setup*/)
 
 
-!!function appInitialize (){
+!!function appInitialize ($){
 
 var global = {
   dragging: false
@@ -568,4 +568,4 @@ _.each(existingBadges, Badge.fromElement);
 _.each(existingGroups, Group.fromElement);
 
 //end app scope
-}();
+}(window.jQuery);
