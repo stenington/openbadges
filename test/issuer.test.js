@@ -55,7 +55,7 @@ appUtils.prepareApp(function(a) {
     issuerApp.get('/bad_img', function(req, res) {
       return res.send(BAD_IMG_BADGE);
     });
-
+  
     issuerApp.get('/example', function(req, res) {
       return res.send(EXAMPLE_BADGE);
     });
