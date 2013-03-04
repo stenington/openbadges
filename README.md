@@ -159,7 +159,7 @@ migration. You can do this as follows:
 
 4. Try out your migration using `./bin/db-migrate up`.
 
-5. Try rolling back your migration using `./bin/db-migrate down`.
+5. Try rolling back your migration using `./bin/db-migrate down --count 1`.
 
 Finally, note that during development, `make start` automatically runs
 `./bin/db-migrate up` for you. For production use, you'll need to manually
