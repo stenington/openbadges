@@ -19,7 +19,7 @@ var argv = optimist
     .default({
       verbose: false
     })
-    .usage('Usage: db-migrate [up|down|create] migrationName [options]')
+    .usage('Usage: db-migrate [up|down|create|rebuild] migrationName [options]')
 
     .describe('count', 'Max number of migrations to run.')
     .alias('c', 'count')
@@ -87,9 +87,20 @@ function run() {
         migrations.down(argv, onComplete);
       }
       break;
+    case 'rebuild':
+      if(verbose) {
+        log.info("Using settings:", mysql.getDatabaseConfig());
+      }
+      mysql.blastDatabase(function(){
+        if(argv._.length > 0) {
+          argv.destination = argv._.shift().toString();
+        }
+        migrations.up(argv, onComplete);
+      });
+      break;
 
     default:
-      log.error('Invalid Action: Must be [up|down|create].');
+      log.error('Invalid Action: Must be [up|down|create|rebuild].');
       optimist.showHelp();
       process.exit(1);
       break;
