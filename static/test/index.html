@@ -57,7 +57,7 @@ asyncTest('cross-frame communication works', function() {
     } else if (event == "load") {
       ok(true, "iframe loads");
       ok(frame.parentNode !== null, "frame is in the DOM");
-      iframe.contentWindow.issue = function(assertions, cb) {
+      iframe.contentWindow.test_issue = function(assertions, cb) {
         var errors = assertions.map(function(url) {
           return {url: url, reason: "DENIED"};
         });

@@ -1,6 +1,27 @@
 var require = {
   baseUrl: "js",
   shim: {
+    'underscore': {
+      exports: function() {
+        return _.noConflict();
+      }
+    },
+    'jquery': {
+      exports: function() {
+        return jQuery.noConflict();
+      }
+    },
+    'jschannel': {
+      exports: function() {
+        return Channel;
+      }
+    },
+    'backbone': {
+      deps: ['jquery', 'underscore'],
+      exports: function() {
+        return Backbone.noConflict();
+      }
+    },
   },
   paths: {
     'test': '../test'

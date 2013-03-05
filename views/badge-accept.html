@@ -123,24 +123,26 @@
   </div>
 </div>
 <script src="https://login.persona.org/include.js"></script>
-<script src="/js/jquery.min.js"></script>
-<script src="/js/jschannel.js"></script>
-<script src="/js/underscore.js"></script>
-<script src="/js/backbone.js"></script>
-<script src="/js/badge-accept/badge-accept.js"></script>
+
+<script src="/js/require-config.js"></script>
+<script src="/js/require.min.js"></script>
 <script src="/js/badge-accept/main.js"></script>
+
 {% if framed %}
-  <script src="/js/badge-accept/build-channel.js"></script>
   <script>
-    $(window).ready(function(){
-      var channel = buildChannel();
+    require(['jquery', 'badge-accept/build-channel'], function($, buildChannel) {
+      $(window).ready(function(){
+        var channel = buildChannel();
+      });
     });
   </script>
 {% else %}
   <script>
-    $(window).ready(function(){
-      window.issue({{assertions}}, function(){
-        window.location = "/";
+    require(['main', 'jquery'], function(issue, $) {
+      $(window).ready(function(){
+        issue({{assertions}}, function(){
+          window.location = "/";
+        });
       });
     });
   </script>

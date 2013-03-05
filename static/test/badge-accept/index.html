@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<title>Issuer Frame Component Unit Tests</title>
-<link rel="stylesheet" href="../qunit.css">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test Suite</title>
+    <link rel="stylesheet" href="../qunit.css">
+  </head>
 
-<h1 id="qunit-header">Unit Tests</h1>
-<h2 id="qunit-banner"></h2>
-<div id="qunit-testrunner-toolbar"></div>
-<h2 id="qunit-userAgent"></h2>
-<ol id="qunit-tests"></ol>
-<div id="qunit-fixture"></div>
+  <body>
+    <h1  id="qunit-header">Test Suite</h1>
+    <h2  id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2  id="qunit-userAgent"></h2>
+    <ol  id="qunit-tests"></ol>
+    <div id="qunit-fixture"></div>
 
-<script src="../qunit.js"></script>
-<script src="../../js/jquery.min.js"></script>
-<script src="../../js/underscore-min.js"></script>
-<script src="../../js/backbone-min.js"></script>
-<script src="../../js/badge-accept/badge-accept.js"></script>
-<script src="component-tests.js"></script>
-<script src="functional-tests.js"></script>
+    <script src="../qunit.js"></script>
+    <script src="../define-tests.js"></script>
+    <script src="../../js/require-config.js"></script>
+    <script src="../../js/require.min.js"></script>
+    <script>
+    defineTests.run(["test/badge-accept/all-tests"]);
+
+    if (location.search.match(/externalreporter=1/))
+      document.write('<script src="/externalreporter.js"></' + 'script>');
+    </script>
+  </body>
+</html>
