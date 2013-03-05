@@ -1,4 +1,6 @@
-define(['jschannel', 'main'], function(Channel, issue) {
+define(function(require) {
+  var Channel = require('jschannel');
+
   /* Uses jschannel.
    *
    * When issuer frame is loaded in an iframe, this
@@ -16,7 +18,7 @@ define(['jschannel', 'main'], function(Channel, issue) {
     });
 
     channel.bind("issue", function(trans, s) {
-      issue = window.test_issue || issue;
+      var issue = window.issue || require('main');
       issue(s, function(errors, successes) {
         trans.complete([errors, successes]);
       });
