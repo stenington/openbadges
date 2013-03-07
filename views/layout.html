@@ -24,7 +24,8 @@
     </script>
     {% block head %}{% endblock %}
   </head>
-  <body {% if bodyClass %}class="{{bodyClass}}"{% endif %}>
+  <body {% if bodyClass %}class="{{bodyClass}}"{% endif %}
+      data-feature-toggles="{% for flag, val in settings.featureToggles %}{{flag}}={{val}};{% endfor %}">
     <div id="fb-root"></div>
     {% if settings.env == 'development' %}
       <img src="/images/testribbon.png" class="test-ribbon" title="{{ settings.sha|d('') }}">
