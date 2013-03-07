@@ -25,7 +25,7 @@ if(!nunjucks.env) {
         featureToggles[parts[0]] = (parts[1] === "true");
       }
     });
-    $.extend(nunjucks.env.globals, featureToggles);
+    $.extend(nunjucks.env.globals, { featureToggles: featureToggles });
     nunjucks.env.addFilter('formatdate', function (rawDate) {
       if (parseInt(rawDate, 10) == rawDate) {
         var date = new Date(rawDate * 1000);

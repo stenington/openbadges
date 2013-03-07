@@ -27,7 +27,7 @@ app.locals({
 });
 
 var toggleConfig = new habitat('feature_toggle');
-app.set('featureToggles', toggleConfig.all());
+app.locals.featureToggles = toggleConfig.all();
 
 // default view engine
 var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__dirname + '/views'));
