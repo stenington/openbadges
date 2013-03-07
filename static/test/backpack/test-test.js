@@ -23,4 +23,10 @@ defineTests([], function() {
     badge.attributes.body = {expires: formatDate(yesterday)};
     equal(badge.isExpired(), true);
   });
+
+  test('parseToggles', function(){
+    deepEqual(parseToggles(''), {});
+    deepEqual(parseToggles('a=true;'), { a: true });
+    deepEqual(parseToggles('a=true;b=false;'), { a: true, b: false });
+  });
 });

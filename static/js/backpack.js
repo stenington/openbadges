@@ -1,3 +1,16 @@
+function parseToggles (toggleStr) {
+  var featureToggles = {};
+  if (toggleStr) {
+    toggleStr.split(';').forEach(function(toggle){
+      if (toggle) {
+        var parts = toggle.split('=');
+        featureToggles[parts[0]] = (parts[1] === "true");
+      }
+    });
+  }
+  return featureToggles;
+}
+
 !!function setup () {
 
 var CSRF = $("input[name='_csrf']").val();
@@ -14,18 +27,11 @@ if(!nunjucks.env) {
     nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/views'));
     if (!nunjucks.env.globals)
       nunjucks.env.globals = {};
+    var toggles = parseToggles($('body').attr('data-feature-toggles'));
     $.extend(nunjucks.env.globals, {
-      csrfToken: CSRF
+      csrfToken: CSRF,
+      featureToggles: toggles
     });
-    var featureToggles = {};
-    $('body').attr('data-feature-toggles')
-    .split(';').forEach(function(toggle){
-      if (toggle) {
-        var parts = toggle.split('=');
-        featureToggles[parts[0]] = (parts[1] === "true");
-      }
-    });
-    $.extend(nunjucks.env.globals, { featureToggles: featureToggles });
     nunjucks.env.addFilter('formatdate', function (rawDate) {
       if (parseInt(rawDate, 10) == rawDate) {
         var date = new Date(rawDate * 1000);
