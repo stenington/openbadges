@@ -17,6 +17,15 @@ if(!nunjucks.env) {
     $.extend(nunjucks.env.globals, {
       csrfToken: CSRF
     });
+    var featureToggles = {};
+    $('body').attr('data-feature-toggles')
+    .split(';').forEach(function(toggle){
+      if (toggle) {
+        var parts = toggle.split('='); 
+        featureToggles[parts[0]] = (parts[1] === "true");
+      }
+    });
+    $.extend(nunjucks.env.globals, featureToggles);
     nunjucks.env.addFilter('formatdate', function (rawDate) {
       if (parseInt(rawDate, 10) == rawDate) {
         var date = new Date(rawDate * 1000);

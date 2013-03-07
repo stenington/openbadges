@@ -9,6 +9,7 @@ var configuration = require('./lib/configuration');
 var flash = require('connect-flash');
 var nunjucks = require('nunjucks');
 var less = require('less-middleware');
+var habitat = require('habitat');
 
 var app = express();
 app.logger = logger;
@@ -24,6 +25,9 @@ app.locals({
   success: [],
   badges: {},
 });
+
+var toggleConfig = new habitat('feature_toggle');
+app.set('featureToggles', toggleConfig.all());
 
 // default view engine
 var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__dirname + '/views'));
