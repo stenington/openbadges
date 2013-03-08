@@ -80,6 +80,7 @@ module.exports = function conmock (options, callback) {
     },
   };
   mock.request = request;
+  mock.locals = {};
   function next (err) {
     mock.fntype = 'next';
     mock.nextErr = err;

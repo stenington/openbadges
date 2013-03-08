@@ -78,6 +78,29 @@ test('options.param', function(t) {
   });
 });
 
+test('res.locals', function (t) {
+  function handler(locals) {
+    var locals = locals || {};
+    return function (req, res, next) {
+      var keys = Object.keys(locals);
+      for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        res.locals[key] = locals[key];
+      }
+      next();
+    };
+  }
+
+  conmock(handler(), function(err, mock){
+    t.same(mock.locals, {});
+  });
+  conmock(handler({ foo: 'bar' }), function(err, mock){
+    t.same(mock.locals.foo, 'bar');
+  });
+
+  t.plan(2);
+});
+
 test('res.contentType', function (t) {
   function handler(type) {
     return function (req, res, next) {
