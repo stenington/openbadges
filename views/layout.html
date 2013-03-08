@@ -22,10 +22,14 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
+    {% if toggles %}
+      <script>
+        window.toggles = {{ toggles|stringify }};
+      </script>
+    {% endif %}
     {% block head %}{% endblock %}
   </head>
-  <body {% if bodyClass %}class="{{bodyClass}}"{% endif %}
-      data-feature-toggles="{% for flag, val in featureToggles %}{{flag}}={{val}};{% endfor %}">
+  <body {% if bodyClass %}class="{{bodyClass}}"{% endif %}>
     <div id="fb-root"></div>
     {% if settings.env == 'development' %}
       <img src="/images/testribbon.png" class="test-ribbon" title="{{ settings.sha|d('') }}">

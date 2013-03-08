@@ -26,9 +26,6 @@ app.locals({
   badges: {},
 });
 
-var toggleConfig = new habitat('feature_toggle');
-app.locals.featureToggles = toggleConfig.all();
-
 // default view engine
 var env = new nunjucks.Environment(new nunjucks.FileSystemLoader(__dirname + '/views'));
 env.express(app);
@@ -41,8 +38,14 @@ env.addFilter('formatdate', function (rawDate) {
   return rawDate;
 });
 
+env.addFilter('stringify', function (obj) {
+  return JSON.stringify(obj);
+});
+
 // Middleware. Also see `middleware.js`
 // ------------------------------------
+var features = (new habitat('enable_feature')).all();
+app.use(middleware.toggle(features));
 app.use(less({
   src: path.join(__dirname, "static/less"),
   paths: [path.join(__dirname, "static/vendor/bootstrap/less")],
