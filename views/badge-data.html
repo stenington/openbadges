@@ -10,7 +10,7 @@
         <img src="{{badge.attributes.image_path}}">
         {% if disownable %}
           <button class='btn btn-danger disown'>Disown this Badge</button>
-          {% if toggles.badge_sharing.on %}
+          {% if featureFlags.enabled.badge_sharing %}
             <form action="/share/badge/{{ badge.attributes.id }}" method="post">
               <input type="hidden" name="_csrf" value="{{ csrfToken }}">
               <input class="btn" type="submit" value="Share">

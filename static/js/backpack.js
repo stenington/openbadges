@@ -14,11 +14,10 @@ if(!nunjucks.env) {
     nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/views'));
     if (!nunjucks.env.globals)
       nunjucks.env.globals = {};
-    var toggles = window.toggles || {};
-    console.log(toggles);
+    var featureFlags = window.featureFlags || {};
     $.extend(nunjucks.env.globals, {
       csrfToken: CSRF,
-      toggles: toggles
+      featureFlags: featureFlags
     });
     nunjucks.env.addFilter('formatdate', function (rawDate) {
       if (parseInt(rawDate, 10) == rawDate) {

@@ -22,11 +22,9 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
-    {% if toggles %}
-      <script>
-        window.toggles = {{ toggles|stringify }};
-      </script>
-    {% endif %}
+    <script>
+      window.featureFlags = {{ featureFlags|stringify }};
+    </script>
     {% block head %}{% endblock %}
   </head>
   <body {% if bodyClass %}class="{{bodyClass}}"{% endif %}>

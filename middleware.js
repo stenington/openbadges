@@ -158,18 +158,15 @@ exports.notFound = function notFound() {
   }
 };
 
-exports.toggle = function toggle(options) {
-  options = options || {};
-  var toggles = _.reduce(_.keys(options), function(memo, feature) {
-    var on = options[feature];
-    memo[feature] = {
-      on: !!on,
-      off: !on
-    };
+exports.featureFlags = function featureFlags(opts) {
+  opts = opts || {};
+  var flags = _.reduce(_.keys(opts), function(memo, feature) {
+    var bucket = opts[feature] ? memo.enabled : memo.disabled;
+    bucket[feature] = true;
     return memo;
-  }, {});
+  }, { enabled: {}, disabled: {} });
   return function (req, res, next) {
-    res.locals.toggles = toggles;
+    res.locals.featureFlags = flags;
     next();
   };
 };

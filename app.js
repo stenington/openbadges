@@ -44,8 +44,8 @@ env.addFilter('stringify', function (obj) {
 
 // Middleware. Also see `middleware.js`
 // ------------------------------------
-var features = (new habitat('enable_feature')).all();
-app.use(middleware.toggle(features));
+var flags = (new habitat('enable_feature')).all();
+app.use(middleware.featureFlags(flags));
 app.use(less({
   src: path.join(__dirname, "static/less"),
   paths: [path.join(__dirname, "static/vendor/bootstrap/less")],

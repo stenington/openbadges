@@ -101,49 +101,50 @@ test('middleware#cors', function (t) {
   t.end();
 });
 
-test('middleware#toggle', function (t) {
-  const handler = middleware.toggle;
+test('middleware#featureFlags', function (t) {
+  const handler = middleware.featureFlags;
+
+  t.test('no flags', function (t) {
+    conmock(handler({}), function (err, mock) {
+      t.ok(mock.locals.featureFlags, 'featureFlags local exists');
+      t.ok(mock.locals.featureFlags.enabled, 'enabled exists');
+      t.ok(mock.locals.featureFlags.disabled, 'disabled exists');
+      t.end();
+    });
+  });
 
   t.test('enabled features', function (t) {
-    var toggles = { feature: true };
-    conmock(handler(toggles), function (err, mock) {
-      t.same(mock.locals.toggles.feature.on, true, 'enabled feature is on');
-      t.same(mock.locals.toggles.feature.off, false, 'enabled feature is not off');
+    var flags = { feature: true };
+    conmock(handler(flags), function (err, mock) {
+      t.ok(mock.locals.featureFlags.enabled.feature, 'feature is enabled');
+      t.notOk(mock.locals.featureFlags.disabled.feature, 'feature is not disabled');
       t.end();
     });
   });
 
   t.test('enabled with truthy', function (t) {
-    var toggles = { feature1: 1, feature2: 'hi' };
-    conmock(handler(toggles), function (err, mock) {
-      t.same(mock.locals.toggles.feature1.on, true, 'enabled with 1');
-      t.same(mock.locals.toggles.feature2.on, true, 'enabled with \'hi\'');
+    var flags = { feature1: 1, feature2: 'hi' };
+    conmock(handler(flags), function (err, mock) {
+      t.ok(mock.locals.featureFlags.enabled.feature1, 'enabled with 1');
+      t.ok(mock.locals.featureFlags.enabled.feature2, 'enabled with \'hi\'');
       t.end();
     });
   });
 
   t.test('disabled features', function (t) {
-    var toggles = { feature: false };
-    conmock(handler(toggles), function (err, mock) {
-      t.same(mock.locals.toggles.feature.on, false, 'disabled feature is not on');
-      t.same(mock.locals.toggles.feature.off, true, 'disabled feature is off');
+    var flags = { feature: false };
+    conmock(handler(flags), function (err, mock) {
+      t.ok(mock.locals.featureFlags.disabled.feature, 'disabled feature is not on');
+      t.notOk(mock.locals.featureFlags.enabled.feature, 'disabled feature is off');
       t.end();
     });
   });
 
   t.test('disabled with falsy', function (t) {
-    var toggles = { feature1: 0, feature2: "" };
-    conmock(handler(toggles), function (err, mock) {
-      t.same(mock.locals.toggles.feature1.off, true, 'disabled with 0');
-      t.same(mock.locals.toggles.feature2.off, true, 'disabled with ""');
-      t.end();
-    });
-  });
-
-  t.test('multiple features', function (t) {
-    var toggles = { feature1: true, feature2: false };
-    conmock(handler(toggles), function (err, mock) {
-      t.ok(mock.locals.toggles.feature1 && mock.locals.toggles.feature2, 'has both features');
+    var flags = { feature1: 0, feature2: "" };
+    conmock(handler(flags), function (err, mock) {
+      t.ok(mock.locals.featureFlags.disabled.feature1, 'disabled with 0');
+      t.ok(mock.locals.featureFlags.disabled.feature2, 'disabled with ""');
       t.end();
     });
   });
