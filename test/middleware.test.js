@@ -101,5 +101,55 @@ test('middleware#cors', function (t) {
   t.end();
 });
 
+test('middleware#toggle', function (t) {
+  const handler = middleware.toggle;
+
+  t.test('enabled features', function (t) {
+    var toggles = { feature: true };
+    conmock(handler(toggles), function (err, mock) {
+      t.same(mock.locals.toggles.feature.on, true, 'enabled feature is on');
+      t.same(mock.locals.toggles.feature.off, false, 'enabled feature is not off');
+      t.end();
+    });
+  });
+
+  t.test('enabled with truthy', function (t) {
+    var toggles = { feature1: 1, feature2: 'hi' };
+    conmock(handler(toggles), function (err, mock) {
+      t.same(mock.locals.toggles.feature1.on, true, 'enabled with 1');
+      t.same(mock.locals.toggles.feature2.on, true, 'enabled with \'hi\'');
+      t.end();
+    });
+  });
+
+  t.test('disabled features', function (t) {
+    var toggles = { feature: false };
+    conmock(handler(toggles), function (err, mock) {
+      t.same(mock.locals.toggles.feature.on, false, 'disabled feature is not on');
+      t.same(mock.locals.toggles.feature.off, true, 'disabled feature is off');
+      t.end();
+    });
+  });
+
+  t.test('disabled with falsy', function (t) {
+    var toggles = { feature1: 0, feature2: "" };
+    conmock(handler(toggles), function (err, mock) {
+      t.same(mock.locals.toggles.feature1.off, true, 'disabled with 0');
+      t.same(mock.locals.toggles.feature2.off, true, 'disabled with ""');
+      t.end();
+    });
+  });
+
+  t.test('multiple features', function (t) {
+    var toggles = { feature1: true, feature2: false };
+    conmock(handler(toggles), function (err, mock) {
+      t.ok(mock.locals.toggles.feature1 && mock.locals.toggles.feature2, 'has both features');
+      t.end();
+    });
+  });
+
+  t.end();
+});
+
 // necessary because middleware requires mysql, which opens a client
 testUtils.finish(test);

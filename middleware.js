@@ -4,6 +4,7 @@ var configuration = require('./lib/configuration');
 var logger = require('./lib/logging').logger;
 var crypto = require('crypto');
 var User = require('./models/user');
+var _ = require('underscore');
 
 // `COOKIE_SECRET` is randomly generated on the first run of the server,
 // then stored to a file and looked up on restart to maintain state.
@@ -155,7 +156,23 @@ exports.notFound = function notFound() {
       res.type('txt').send('Not found');
     }
   }
-}
+};
+
+exports.toggle = function toggle(options) {
+  options = options || {};
+  var toggles = _.reduce(_.keys(options), function(memo, feature) {
+    var on = options[feature];
+    memo[feature] = {
+      on: !!on,
+      off: !on
+    };
+    return memo;
+  }, {});
+  return function (req, res, next) {
+    res.locals.toggles = toggles;
+    next();
+  };
+};
 
 var utils = exports.utils = {};
 var pseudoRandomBytes = function(num) {
