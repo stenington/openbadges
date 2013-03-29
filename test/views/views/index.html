@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<title>Wut</title>
+
+<div>
+  <h3>Valid URLs</h3>
+  Valid URLs take the form:
+  <ul>
+    <li><code>/:setup/:view</code></li>
+    <li><code>/:view</code></li>
+  </ul>
+  where <code>:setup</code> is the name of a setup method in <code>setup.js</code>,
+  and <code>:view</code> is the name of a view file in the main app or
+  test views directory.
+</div>
+
+<div>
+  <h3>Setup methods</h3>
+  <ul>
+  {% for method in setups %}
+    <li>{{method}}</li>
+  {% endfor %}
+  </ul>
+</div>
+
+<div>
+  <h3>Test views</h3>
+  <ul>
+  {% for view in testViews %}
+    <li><a href="{{view}}">{{view}}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+
+<div>
+  <h3>App views</h3>
+  <ul>
+  {% for view in appViews %}
+    <li><a href="{{view}}">{{view}}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+
+
