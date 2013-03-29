@@ -34,8 +34,14 @@ app.param('setup', function(req, res, next, id) {
 app.get('/', function(req, res, next) {
   var realTestViews = fs.readdirSync(testViews);
   realTestViews.splice(realTestViews.indexOf('index.html'), 1);
+  var setups = Object.keys(setup).map(function(key){
+    return {
+      name: key,
+      description: setup[key]['description'] || ''
+    };
+  });
   res.render('index.html', {
-    setups: Object.keys(setup),
+    setups: setups,
     testViews: realTestViews,
     appViews: fs.readdirSync(appViews)
   });

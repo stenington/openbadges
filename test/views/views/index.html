@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <title>Wut</title>
+<style>
+  body {
+    font-family: Helvetica, sans-serif;
+    padding: 0px 10px;
+  }
+</style>
 
 <div>
   <h3>Valid URLs</h3>
@@ -13,11 +19,11 @@
   test views directory.
 </div>
 
-<div>
+<div class="setup">
   <h3>Setup methods</h3>
   <ul>
   {% for method in setups %}
-    <li>{{method}}</li>
+    <li><strong>{{method.name}}</strong>: {{method.description}}</li>
   {% endfor %}
   </ul>
 </div>
