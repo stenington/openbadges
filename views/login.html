@@ -1,5 +1,12 @@
 {% extends 'layout.html' %}
 {% set bodyClass = 'login' %}
+
+{% block mainNav %}
+  <ul class="nav pull-right">
+    <li><a class="js-browserid-link" href="#">Log In</a></li>
+  </ul>
+{% endblock %}
+
 {% block body %}
 <h1 class="title">Welcome to your Backpack</h1>
 <p class="subtitle">Celebrate your skills & passions</p>
