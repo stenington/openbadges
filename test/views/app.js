@@ -2,17 +2,20 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
+const _ = require('underscore');
 const nunjucks = require('nunjucks');
 const middleware = require('../../middleware');
 const setup = require('./setup');
 
 const app = express();
 
+/* These should match what's in the main app.js */
 app.locals({
   error: [],
   success: [],
 });
 
+/* Load both the main app views, and our test views (if any) */
 const appViews = path.join(__dirname, '../../views');
 const testViews = path.join(__dirname, 'views');
 const env = new nunjucks.Environment([
@@ -21,19 +24,32 @@ const env = new nunjucks.Environment([
 ]);
 env.express(app);
 
+/* Provide access to the same static resources */
 app.use(middleware.less());
 app.use(express.static(path.join(__dirname, "../../static")));
 
-app.param('setup', function(req, res, next, id) {
-  if (!setup[id]) 
-    next(new Error('setup method ' + id + '() not defined'));
-  req.data = setup[id]();
-  next();
-});
+/* listDir: 
+   Recursively list directories, relative to a base dir */
+function listDir(dir, base) {
+  base = base || dir;
+  return fs.readdirSync(dir).reduce(function(prev, current) {
+    var full = path.join(dir, current);
+    if(fs.statSync(full).isDirectory()) {
+      Array.prototype.push.apply(prev, listDir(full, base));
+      return prev;
+    }
+    else {
+      prev.push(path.relative(base, full));
+      return prev;
+    }
+  }, []);
+}
 
+/* Render index.html */
 app.get('/', function(req, res, next) {
-  var realTestViews = fs.readdirSync(testViews);
-  realTestViews.splice(realTestViews.indexOf('index.html'), 1);
+  var realTestViews = listDir(testViews).filter(function(view){
+    return view !== 'index.html'; 
+  });
   var setups = Object.keys(setup).map(function(key){
     return {
       name: key,
@@ -43,21 +59,31 @@ app.get('/', function(req, res, next) {
   res.render('index.html', {
     setups: setups,
     testViews: realTestViews,
-    appViews: fs.readdirSync(appViews)
+    appViews: listDir(appViews)
   });
 });
 
-function renderTemplate(req, res, next) {
-  var data = req.data || {};
-  var view = req.params.view;
+/* App or test template rendering */
+app.get(/\/(.+)/, function renderTemplate(req, res, next) {
+  var view = req.params[0];
+  console.log(view);
+  var setups = req.query.setup;
+  var data = {};
+  if (setups) {
+    if (!(setups instanceof Array)) setups = [setups];
+    for (var i = 0; i < setups.length; i++) {
+      if (setup[setups[i]])
+        data = _.extend(data, setup[setups[i]]());  
+      else
+        next(new Error("Undefined setup method '" + setups[i] + "'"));
+    }
+  }
   app.render(view, data, function(err, html) {
     if (err) next(err);
     res.send(html);
   });
-}
+});
 
-app.get('/:setup/:view', renderTemplate);
-app.get('/:view', renderTemplate);
 
 var server = http.createServer(app);
 if (!module.parent) {

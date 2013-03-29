@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<title>Wut</title>
+<title>Himo</title>
 <style>
   body {
     font-family: Helvetica, sans-serif;
@@ -11,12 +11,12 @@
   <h3>Valid URLs</h3>
   Valid URLs take the form:
   <ul>
-    <li><code>/:setup/:view</code></li>
-    <li><code>/:view</code></li>
+    <li><code>/path/to/view.html</code></li>
+    <li><code>/path/to/view.html?setup=method1&amp;setup=method2</code></li>
   </ul>
-  where <code>:setup</code> is the name of a setup method in <code>setup.js</code>,
-  and <code>:view</code> is the name of a view file in the main app or
-  test views directory.
+  where <code>methodN</code> is the name of a method in <code>setup.js</code>,
+  and <code>/path/to/view.html</code> is the path of a view file relative to 
+  the main app view or test view directory.
 </div>
 
 <div class="setup">
