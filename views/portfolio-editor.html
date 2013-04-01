@@ -17,7 +17,7 @@
 
         <textarea name='stories[{{badge.attributes.id}}]' tabindex=1 class='story' placeholder='some information about this badge'>{{badge.attributes._userStory}}</textarea>
 
-        {% include 'badge-data.html' %}
+        {% include 'badge-data-partial.html' %}
       </li>
     {% endfor %}
   </ul>

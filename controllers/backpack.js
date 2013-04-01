@@ -161,7 +161,7 @@ exports.recentBadges = function recent (request, response, next) {
   function startResponse () {
     return user.getLatestBadges(function(err, badges) {
       if (err) return next(err);
-      return badgePage(request, response, badges, 'recentBadges.html');
+      return badgePage(request, response, badges, 'recent-badges.html');
     });
   }
 
@@ -176,7 +176,7 @@ exports.allBadges = function everything (request, response, next) {
   function startResponse () {
     return user.getAllBadges(function(err, badges) {
       if (err) return next(err);
-      return badgePage(request, response, badges, 'allBadges.html');
+      return badgePage(request, response, badges, 'all-badges.html');
     });
   }
 
@@ -257,7 +257,7 @@ exports.manage = function manage(request, response, next) {
     if (err) return next(err);
     prepareBadgeIndex(badges);
     modifyGroups(groups);
-    response.render('backpack.html', {
+    response.render('collections.html', {
       error: error,
       success: success,
       badges: badges,
@@ -333,7 +333,7 @@ exports.addBadge = function addBadge(request, response) {
   var error = request.flash('error');
   var success = request.flash('success');
 
-  response.render('addBadge.html', {
+  response.render('add-badge.html', {
     error: error,
     success: success,
     csrfToken: request.session._csrf

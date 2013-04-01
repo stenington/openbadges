@@ -400,7 +400,7 @@ Details.View = Backbone.View.extend({
   },
 
   render: function () {
-    this.el = template('badge-details.html', { 
+    this.el = template('badge-details-template.html', { 
       badge: { 
         attributes: this.model.attributes 
       },
@@ -487,7 +487,7 @@ Badge.View = Backbone.View.extend({
    * Render this sucker.
    */
   render: function () {
-    this.el = template('badges_partial.html', this.model.attributes);
+    this.el = template('badges-template.html', this.model.attributes);
     this.$el.data('view', this);
     this.setElement($(this.el));
     this.attachToExisting($(this.el));
