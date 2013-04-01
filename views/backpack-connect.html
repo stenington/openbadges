@@ -39,8 +39,8 @@ a.logout {
 {% endblock %}
 
 {% block scripts %}
-<script src="https://login.persona.org/include.js"></script>
-<script src="/js/jquery.min.js"></script>
+{{ super() }}
+<script type="text/javascript" src="https://login.persona.org/include.js"></script>
 <script>
 $(window).ready(function() {
   var reloadPage = function() { window.location.reload(); };

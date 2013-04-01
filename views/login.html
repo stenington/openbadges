@@ -1,6 +1,10 @@
 {% extends 'layout.html' %}
 {% set bodyClass = 'login' %}
 
+{% block head %}
+  <script type="text/javascript" src="https://login.persona.org/include.js"></script>
+{% endblock %}
+
 {% block mainNav %}
   <ul class="nav pull-right">
     <li><a class="js-browserid-link" href="#">Log In</a></li>
@@ -16,8 +20,9 @@
   <input class="js-browserid-input" name="assertion" type="hidden"></input>
   <input name="_csrf" type="hidden" value="{{ csrfToken }}"></input>
 </form>
+{% endblock %}
 
-
+{% block scripts %}
 <script type="text/javascript">
 !!function loginHandler () {
 //begin login handler
