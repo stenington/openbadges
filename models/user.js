@@ -1,8 +1,11 @@
 var crypto = require('crypto');
+var async = require('async');
 var regex = require('../lib/regex');
 var mysql = require('../lib/mysql');
 var Base = require('./mysql-base');
 var Badge = require('./badge');
+var Group = require('./group');
+var Portfolio = require('./portfolio');
 
 var User = function (attributes) {
   this.attributes = attributes;
@@ -68,6 +71,41 @@ User.totalCount = function (callback) {
     }
     return callback(null, users.length);
   })
-}
+};
+
+User.deleteAccount = function (email, callback) {
+  User.findOne({ email: email }, function (err, user) {
+    if (err)
+      return callback(err);
+    if (!user)
+      return callback();
+    var user_id = user.attributes.id;
+    async.auto({
+      getGroups: function (callback, results) {
+        Group.find({ user_id: user_id }, callback);
+      },
+      deletePortfolios: ['getGroups', function (callback, results) {
+        var groups = results.getGroups;
+        async.each(groups, function(group, callback) {
+          var group_id = group.attributes.id;
+          Portfolio.findAndDestroy({ group_id: group_id }, callback);
+        }, callback);
+      }],
+      deleteGroups: ['deletePortfolios', function (callback, results) {
+        Group.findAndDestroy({ user_id: user_id }, callback);
+      }],
+      deleteBadges: function (callback, results) {
+        Badge.findAndDestroy({ user_id: user_id }, callback);
+      },
+      deleteUser: ['deleteGroups', 'deleteBadges', function (callback, results) {
+        user.destroy(callback);
+      }]
+    }, function(err, results) {
+      if (err)
+        return callback(err);
+      return callback(null, results.deleteUser);
+    });
+  });
+};
 
 module.exports = User;
