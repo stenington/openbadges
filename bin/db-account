@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+
+var optimist = require('optimist');
+var prompt = require('prompt');
+var util = require('util');
+var User = require('../models/user');
+var db = require('../lib/configuration').get('database').database;
+
+var argv = optimist
+  .usage('Usage: db-account [options] <email>\n\nDescribes (or deletes) a user account')
+  .describe('delete', 'delete the specified account')
+  .alias('d', 'delete')
+  .boolean('delete')
+
+  .describe('color', 'print colorized account data')
+  .alias('c', 'color')
+  .boolean('color')
+
+  .alias('h', 'help')
+  .alias('h', '?')
+  .boolean('h')
+  .argv;
+
+var email = argv._[0];
+var dryRun = true;
+var colorized = !!argv.color;
+
+if (argv.help || !email) {
+  optimist.showHelp();
+  process.exit(1);
+}
+
+if (argv.delete)
+  dryRun = false;
+else
+  prompt.override = {
+    permission: 'Y'
+  };
+
+prompt.start();
+prompt.message = prompt.delimiter = '';
+
+function warning() {
+  var msg = 'This command will '
+    + 'DELETE ALL DATA'.bold.underline
+    + ' associated with `' + email + '`'
+    + ' in `' + db + '`!'
+    + ' Proceed?';
+  return msg.red;
+}
+
+var property = {
+  name: 'permission',
+  message: warning(),
+  validator: /^(y(es)?|no?)$/i,
+  warning: 'Must respond yes or no',
+  default: 'no'
+};
+
+prompt.get(property, function(err, result) {
+  if (err) throw err;
+  if (result.permission.match(/^y/i)) {
+    User.deleteAccount(email, { dryRun: dryRun }, function(err, result) {
+      if (err)
+        console.log('Error:'.red, err);
+      else if (!result)
+        console.log('No account for'.yellow, email);
+      else
+        console.log(colorized ? util.inspect(result, false, 99, true) : result);
+      process.exit(0);
+    });
+  }
+  else {
+    console.log('Aborted'.yellow);
+    process.exit(0);
+  }
+});

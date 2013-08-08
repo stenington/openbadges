@@ -1,5 +1,6 @@
 var crypto = require('crypto');
 var async = require('async');
+var _ = require('underscore');
 var regex = require('../lib/regex');
 var mysql = require('../lib/mysql');
 var Base = require('./mysql-base');
@@ -73,37 +74,78 @@ User.totalCount = function (callback) {
   })
 };
 
-User.deleteAccount = function (email, callback) {
+User.deleteAccount = function (email, opts, callback) {
+  if (typeof opts === 'function') {
+    callback = opts;
+    opts = {};
+  }
+
+  var destroy = opts.dryRun ?
+    function(callback){ return callback(null) } :
+    Base.prototype.destroy;
+
   User.findOne({ email: email }, function (err, user) {
     if (err)
       return callback(err);
     if (!user)
       return callback();
-    var user_id = user.attributes.id;
+    var userAttrs = _.clone(user.attributes);
+    var userId = user.attributes.id;
     async.auto({
       getGroups: function (callback, results) {
-        Group.find({ user_id: user_id }, callback);
+        Group.find({ user_id: userId }, function(err, groups) {
+          callback(err, groups);
+        });
       },
       deletePortfolios: ['getGroups', function (callback, results) {
         var groups = results.getGroups;
-        async.each(groups, function(group, callback) {
-          var group_id = group.attributes.id;
-          Portfolio.findAndDestroy({ group_id: group_id }, callback);
-        }, callback);
+        async.reduce(groups, {}, function(memo, group, callback) {
+          var groupId = group.attributes.id;
+          Portfolio.find({ group_id: groupId }, function(err, portfolios){
+            if (err)
+              return callback(err);
+            memo[groupId] = portfolios.map(function(p){ return _.clone(p.attributes); });
+            async.each(portfolios, function(portfolio, callback) {
+              destroy.call(portfolio, callback);
+            }, function(err) {
+              return callback(err, memo);
+            });
+          });
+        }, function (err, results) {
+          return callback(err, results);
+        });
       }],
       deleteGroups: ['deletePortfolios', function (callback, results) {
-        Group.findAndDestroy({ user_id: user_id }, callback);
+        var groups = results.getGroups;
+        var attrs = groups.map(function(o){ return _.clone(o.attributes); });
+        async.each(groups, function(group, callback) {
+          destroy.call(group, callback);
+        }, function(err) {
+          callback(err, attrs);
+        });
       }],
       deleteBadges: function (callback, results) {
-        Badge.findAndDestroy({ user_id: user_id }, callback);
+        Badge.find({ user_id: userId }, function(err, badges) {
+          var attrs = badges.map(function(o){ return _.clone(o.attributes); });
+          async.each(badges, function(badge, callback) {
+            destroy.call(badge, callback);
+          }, function(err) {
+            callback(err, attrs);
+          });
+        });
       },
       deleteUser: ['deleteGroups', 'deleteBadges', function (callback, results) {
-        user.destroy(callback);
+        destroy.call(user, callback);
       }]
     }, function(err, results) {
       if (err)
         return callback(err);
-      return callback(null, results.deleteUser);
+      return callback(null, {
+        user: userAttrs,
+        badges: results.deleteBadges,
+        groups: results.deleteGroups,
+        portfolios: results.deletePortfolios
+      });
     });
   });
 };

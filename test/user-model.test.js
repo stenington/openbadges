@@ -85,11 +85,57 @@ testUtils.prepareDatabase({
     })
   })
 
+  test('User.deleteAccount dry run', function (t) {
+    const email = 'deleteme@example.org';
+    User.deleteAccount(email, { dryRun: true }, function(err, account) {
+      t.notOk(err, "should not have an error");
+
+      t.equal(account.user.email, 'deleteme@example.org', "delete the right account");
+      t.equal(account.badges.length, 1, "one badge deleted");
+      t.equal(account.badges[0].id, 1, "has id");
+      t.equal(account.groups.length, 1, "one group deleted");
+      t.equal(account.groups[0].id, 1, "has id");
+      t.equal(account.portfolios[account.groups[0].id].length, 1, "one portfolio deleted");
+      t.equal(account.portfolios[account.groups[0].id][0].id, 1, "has id");
+
+      async.parallel([
+        function(callback) {
+          User.find({ id: 1 }, function(err, users) {
+            t.equal(users.length, 1, 'not deleted');
+            callback();
+          });
+        },
+        function(callback) {
+          Badge.find({ user_id: 1 }, function(err, badges) {
+            t.equal(badges.length, 1, 'not deleted');
+            callback();
+          });
+        },
+        function(callback) {
+          Group.find({ user_id: 1 }, function(err, groups) {
+            t.equal(groups.length, 1, 'not deleted');
+            callback();
+          });
+        }
+      ], function() {
+        t.end();
+      })
+    });
+  });
+
   test('User.deleteAccount for user with badge, group, and portfolio', function (t) {
     const email = 'deleteme@example.org';
-    User.deleteAccount(email, function(err, user) {
+    User.deleteAccount(email, function(err, account) {
       t.notOk(err, "should not have an error");
-      t.equal(user.attributes.email, 'deleteme@example.org', "delete the right account");
+
+      t.equal(account.user.email, 'deleteme@example.org', "delete the right account");
+      t.equal(account.badges.length, 1, "one badge deleted");
+      t.equal(account.badges[0].id, 1, "has id");
+      t.equal(account.groups.length, 1, "one group deleted");
+      t.equal(account.groups[0].id, 1, "has id");
+      t.equal(account.portfolios[account.groups[0].id].length, 1, "one portfolio deleted");
+      t.equal(account.portfolios[account.groups[0].id][0].id, 1, "has id");
+
       async.parallel([
         function(callback) {
           User.find({ id: 1 }, function(err, users) {
