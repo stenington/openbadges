@@ -69,8 +69,18 @@ exports.logRequests = function logRequests() {
 
 exports.statsdRequests = function statsdRequests () {
   return function (req, res, next) {
-    var bucket = util.format('obi%s.%s', req.path.replace(/\//g, '.'), req.method.toLowerCase());
-    statsd.increment(bucket);
+    // this method of hijacking res.end is inspired by connect.logger()
+    // see connect/lib/middleware/logger.js for details
+    const end = res.end;
+    res.end = function(chunk, encoding) {
+      res.end = end;
+      res.end(chunk, encoding);
+      var base = (req.route && typeof req.route.path === 'string') ?
+        req.route.path.replace(/[:\.]/g, '_') :
+        req.path;
+      var bucket = util.format('obi%s.%s', base.replace(/\//g, '.'), req.method.toLowerCase());
+      statsd.increment(bucket);
+    }
     return next();
   };
 };
